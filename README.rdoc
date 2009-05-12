@@ -1,0 +1,7 @@
+= repaginator
+
+Description goes here.
+
+== Copyright
+
+Copyright (c) 2009 Scott Tadman. See LICENSE for details.
