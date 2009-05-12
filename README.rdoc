@@ -1,7 +1,8 @@
 = repaginator
 
-Description goes here.
+This is Repaginator. It paginates. Better.
 
 == Copyright
 
-Copyright (c) 2009 Scott Tadman. See LICENSE for details.
+Copyright (c) 2009 Scott Tadman, The Working Group Inc.
+

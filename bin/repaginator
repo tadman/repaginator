@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path("../lib", File.dirname(__FILE__))
+
+require 'rubygems'
+require 'eventmachine'
+require 'repaginator'
+
+EventMachine::run do
+  EventMachine::start_server('127.0.0.1', 11310, Repaginator::Server)
+end
