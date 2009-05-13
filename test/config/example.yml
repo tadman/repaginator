@@ -1,0 +1,5 @@
+development:
+  buckets:
+    posts: PostsBucket
+  sets:
+    tags: TagSet

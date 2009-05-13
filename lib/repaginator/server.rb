@@ -12,8 +12,8 @@ module Repaginator
     
     # == Instance Methods ===================================================
     
-    def initialize(options)
-      @options = options
+    def initialize(config)
+      @config = config
       
       @buckets = { }
       @sets = { }
@@ -38,17 +38,18 @@ module Repaginator
     # -- Command Implementation ---------------------------------------------
     
     def get_command
-      # Format: bucket=BUCKET_ID;page=PAGE_SPEC
-      # Options: union=COLUMN_ID/SET_ID
-      #          exclude=COLUMN_ID/SET_ID
+      # Format: bucket=BUCKET_NAME/BUCKET_ID;page=PAGE_NUM/PAGE_SIZE
+      # Options: union=SET_ID/COLUMN_ID
+      #          exclude=SET_ID/COLUMN_ID
     end
     
     def append_command
-      # Format: bucket=BUCKET_ID
+      # Format: bucket=BUCKET_NAME/BUCKET_ID or set=SET_NAME/SET_ID
     end
     
     def delete_command
-      # Format: bucket=BUCKET_ID
+      # Format: bucket=BUCKET_NAME/BUCKET_ID or set=SET_NAME/SET_ID
+      #         bucket=BUCKET_NAME or set=SET_NAME
     end
     
     def flush_all_command

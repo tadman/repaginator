@@ -2,7 +2,7 @@
 
 # == Dependencies ===========================================================
 
-$LOAD_PATH.unshift(File.expand_path("../lib", File.dirname(__FILE__)))
+$LOAD_PATH.unshift(File.expand_path('../lib', File.dirname(__FILE__)))
 
 require 'rubygems'
 require 'eventmachine'
@@ -12,29 +12,58 @@ require 'optparse'
 
 # == Support Methods ========================================================
 
-def show_version
-  puts "repaginator #{Repaginator::VERSION}"
-  exit(0)
-end
-
 # == Command Line Options ===================================================
 
 options = {
   :verbose => false
 }
 
-opts = OptionParser.new
+opts = OptionParser.new do |opts|
+  opts.banner = 'Usage: repaginator [options]'
+  
+  opts.separator('')
+  opts.separator('Specific options:')
 
-opts.on('-c', '--config=s') { |path| @options[:config] = path }
-opts.on('--version') { show_version }
-opts.on('-v', '--verbose')
+  opts.on('-c', '--config [CONFIG]', 'Use a specific configuration file') do |path|
+    options[:config] = path
+  end
+  
+  opts.on('-p', '--port [PORT]', OptionParser::DecimalInteger,  "Bind to an alternate port (Default #{Repaginator::Server.port})") do |port|
+    options[:port] = port
+  end
 
-args = opts.parse(*ARGV)
+  opts.on('-v', '--[no-]verbose', 'Run verbosely') do |verbose|
+    options[:verbose] = verbose
+  end
 
-config = Repaginator::Config.new(options)
+  opts.separator('')
+  opts.separator('Common options:')
+
+  opts.on_tail('--version', 'Show version information') do
+    puts "repaginator #{Repaginator::VERSION}"
+    exit(0)
+  end
+  
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts opts
+    exit(0)
+  end
+end
 
 # == Main ===================================================================
 
-EventMachine::run do
-  EventMachine::start_server('127.0.0.1', 11310, Repaginator::Server)
+begin
+  opts.parse!(ARGV)
+
+  config = Repaginator::Configuration.new(options)
+
+  EventMachine::run do
+    EventMachine::start_server('127.0.0.1', config.port, Repaginator::Server, config)
+  end
+rescue Repaginator::RuntimeException => e
+  STDERR.puts e.to_s
+  exit(-1)
+rescue OptionParser::InvalidOption => e
+  STDERR.puts 'repaginator: ' + e.to_s
+  exit(-1)
 end

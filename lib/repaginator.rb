@@ -6,4 +6,7 @@ module Repaginator
   autoload(:Set, 'repaginator/set')
   
   VERSION = '0.0.1'
+  
+  class RuntimeException < Exception
+  end
 end
