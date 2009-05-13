@@ -1,14 +1,21 @@
 require 'rubygems'
 require 'rake'
 
+$LOAD_PATH.unshift(File.expand_path("lib", File.dirname(__FILE__)))
+require 'repaginator'
+
 begin
   require 'jeweler'
+
   Jeweler::Tasks.new do |gem|
     gem.name = "repaginator"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{High-performance content pagination engine with Memcache interface}
+    gem.version = Repaginator::VERSION
     gem.email = "github@tadman.ca"
     gem.homepage = "http://github.com/tadman/repaginator"
-    gem.authors = ["Scott Tadman"]
+    gem.authors = [ "Scott Tadman" ]
+    
+    gem.executables = %w[ repaginator ]
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
@@ -36,7 +43,6 @@ rescue LoadError
   end
 end
 
-
 task :default => :test
 
 require 'rake/rdoctask'
@@ -53,4 +59,3 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
-

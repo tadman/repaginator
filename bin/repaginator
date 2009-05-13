@@ -1,10 +1,39 @@
 #!/usr/bin/env ruby
 
-$: << File.expand_path("../lib", File.dirname(__FILE__))
+# == Dependencies ===========================================================
+
+$LOAD_PATH.unshift(File.expand_path("../lib", File.dirname(__FILE__)))
 
 require 'rubygems'
 require 'eventmachine'
 require 'repaginator'
+
+require 'optparse'
+
+# == Support Methods ========================================================
+
+def show_version
+  puts "repaginator #{Repaginator::VERSION}"
+  exit(0)
+end
+
+# == Command Line Options ===================================================
+
+options = {
+  :verbose => false
+}
+
+opts = OptionParser.new
+
+opts.on('-c', '--config=s') { |path| @options[:config] = path }
+opts.on('--version') { show_version }
+opts.on('-v', '--verbose')
+
+args = opts.parse(*ARGV)
+
+config = Repaginator::Config.new(options)
+
+# == Main ===================================================================
 
 EventMachine::run do
   EventMachine::start_server('127.0.0.1', 11310, Repaginator::Server)
