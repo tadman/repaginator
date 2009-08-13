@@ -19,6 +19,8 @@ class BucketTest < Test::Unit::TestCase
     assert_equal 100_000, bucket.length
     assert_equal 100_000, bucket.size
     
+    assert_equal [ 49_999, 50_001 ], bucket.adjacent_to(50_000)
+    
     bucket.per_page = 100
     
     assert_equal (0..99).collect, bucket.page(1).collect { |r| r[0] }
@@ -52,5 +54,13 @@ class BucketTest < Test::Unit::TestCase
     
     assert_equal 100_000, bucket.length
     assert_equal 80_000, filtered.length
+  end
+
+  def test_larger_bucket
+    bucket = Repaginator::Bucket.new
+
+    100_000.times do |n|
+      bucket.append([ n, rand(100), n % 5, rand(1) ])
+    end
   end
 end

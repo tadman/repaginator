@@ -93,6 +93,16 @@ module Repaginator
         subset.delete(key)
       end
     end
+    
+    def adjacent_to(ident)
+      # FUTURE: A binary search would be more efficient here for
+      #         inherently sorted lists.
+      if (location = @content.find_index { |i| i[0] == ident})
+        [ @content[location - 1][0], @content[location + 1][0] ]
+      else
+        [ nil, nil ]
+      end
+    end
 
   protected
     def subset(content = nil, &block)
